@@ -18,7 +18,7 @@ function Login() {
 
         try {
             const response = await axios.post(
-                "http://localhost:4040/api/auth/login",
+                "https://campusride-production-1b98.up.railway.app/api/auth/login",
                 {
                     email: email.trim(),
                     password: password

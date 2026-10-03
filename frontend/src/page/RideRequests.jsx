@@ -28,7 +28,7 @@ function RideRequests() {
             setError("");
 
             const response = await axios.get(
-                `http://localhost:4040/api/requests/ride/${rideId}`,
+                `https://campusride-production-1b98.up.railway.app/api/requests/ride/${rideId}`,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`
@@ -63,7 +63,7 @@ function RideRequests() {
             setError("");
 
             const response = await axios.put(
-                `http://localhost:4040/api/requests/${requestId}/accept`,
+                `https://campusride-production-1b98.up.railway.app/api/requests/${requestId}/accept`,
                 {},
                 {
                     headers: {
@@ -107,7 +107,7 @@ function RideRequests() {
             setError("");
 
             const response = await axios.put(
-                `http://localhost:4040/api/requests/${requestId}/reject`,
+                `https://campusride-production-1b98.up.railway.app/api/requests/${requestId}/reject`,
                 {},
                 {
                     headers: {

@@ -23,7 +23,7 @@ function Profile() {
     const loadProfile = async (token) => {
         try {
             const response = await axios.get(
-                "http://localhost:4040/api/users/profile",
+                "https://campusride-production-1b98.up.railway.app/api/users/profile",
                 {
                     headers: {
                         Authorization: `Bearer ${token}`

@@ -31,7 +31,7 @@ function FindRide() {
 
         try {
             const response = await axios.get(
-                "http://localhost:4040/api/rides/search",
+                "https://campusride-production-1b98.up.railway.app/api/rides/search",
                 {
                     params: {
                         source: source.trim(),
@@ -80,7 +80,7 @@ function FindRide() {
 
         try {
             const response = await axios.post(
-                `http://localhost:4040/api/requests/${rideId}`,
+                `https://campusride-production-1b98.up.railway.app/api/requests/${rideId}`,
                 {},
                 {
                     headers: {
