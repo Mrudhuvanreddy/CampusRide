@@ -40,7 +40,10 @@ public class SecurityConfig {
                 new CorsConfiguration();
 
         configuration.setAllowedOrigins(
-                List.of("http://localhost:5173")
+                List.of(
+                        "http://localhost:5173",
+                        "https://campus-ride-orpin.vercel.app"
+                )
         );
 
         configuration.setAllowedMethods(
@@ -100,10 +103,9 @@ public class SecurityConfig {
                     "/**"
                 ).permitAll()
 
-                // Authentication APIs
+                // All authentication APIs are public
                 .requestMatchers(
-                    "/api/auth/register",
-                    "/api/auth/login"
+                    "/api/auth/**"
                 ).permitAll()
 
                 // Everything else requires JWT
