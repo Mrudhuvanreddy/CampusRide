@@ -34,7 +34,7 @@ function MyRides() {
              */
 
             const ridesResponse = await axios.get(
-                "http://localhost:4040/api/rides",
+                "https://campusride-production-1b98.up.railway.app/api/rides",
                 {
                     headers: {
                         Authorization: `Bearer ${token}`
@@ -56,7 +56,7 @@ function MyRides() {
              */
 
             const requestsResponse = await axios.get(
-                "http://localhost:4040/api/requests/my-requests",
+                "https://campusride-production-1b98.up.railway.app/api/requests/my-requests",
                 {
                     headers: {
                         Authorization: `Bearer ${token}`

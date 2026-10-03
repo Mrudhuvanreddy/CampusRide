@@ -31,7 +31,7 @@ function OfferRide() {
 
         try {
             const response = await axios.post(
-                "http://localhost:4040/api/rides",
+                "https://campusride-production-1b98.up.railway.app/api/rides",
                 {
                     source: source.trim(),
                     destination: destination.trim(),
