@@ -1,11 +1,7 @@
 package com.campusride.controller;
 
-import com.campusride.dto.RideRequest;
-import com.campusride.dto.RideResponse;
-import com.campusride.entity.Ride;
-import com.campusride.entity.User;
-import com.campusride.repository.RideRepository;
-import com.campusride.repository.UserRepository;
+import java.time.LocalDate;
+import java.util.List;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,8 +11,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.time.LocalDate;
-import java.util.List;
+import com.campusride.dto.RideRequest;
+import com.campusride.dto.RideResponse;
+import com.campusride.entity.Ride;
+import com.campusride.entity.User;
+import com.campusride.repository.RideRepository;
+import com.campusride.repository.UserRepository;
 
 @RestController
 @RequestMapping("/api/rides")
@@ -54,6 +54,7 @@ public class RideController {
         ride.setRideDate(request.getRideDate());
         ride.setRideTime(request.getRideTime());
         ride.setAvailableSeats(request.getAvailableSeats());
+        ride.setTotalExpense(request.getTotalExpense());
         ride.setStatus("ACTIVE");
 
         Ride savedRide = rideRepository.save(ride);
@@ -107,7 +108,8 @@ public class RideController {
                 ride.getRideDate(),
                 ride.getRideTime(),
                 ride.getAvailableSeats(),
+                ride.getTotalExpense(),
                 ride.getStatus()
         );
     }
-}
+}       

@@ -33,6 +33,9 @@ public class Ride {
     private Integer availableSeats;
 
     @Column(nullable = false)
+    private Double totalExpense;
+
+    @Column(nullable = false)
     private String status;
 
     public Ride() {
@@ -92,6 +95,14 @@ public class Ride {
 
     public void setAvailableSeats(Integer availableSeats) {
         this.availableSeats = availableSeats;
+    }
+
+    public Double getTotalExpense() {
+        return totalExpense;
+    }
+
+    public void setTotalExpense(Double totalExpense) {
+        this.totalExpense = totalExpense;
     }
 
     public String getStatus() {

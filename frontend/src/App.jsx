@@ -9,6 +9,7 @@ import FindRide from "./page/FindRide";
 import MyRides from "./page/MyRides";
 import RideRequests from "./page/RideRequests";
 import Profile from "./page/Profile";
+import Chat from "./Chat";
 
 import PageTransition from "./components/PageTransition";
 
@@ -38,6 +39,11 @@ function App() {
                     />
 
                     <Route path="/profile" element={<Profile />} />
+
+                    <Route
+                        path="/chat/:rideId"
+                        element={<Chat />}
+                    />
 
                 </Routes>
             </PageTransition>

@@ -10,6 +10,7 @@ function OfferRide() {
     const [rideDate, setRideDate] = useState("");
     const [rideTime, setRideTime] = useState("");
     const [availableSeats, setAvailableSeats] = useState("");
+    const [totalExpense, setTotalExpense] = useState("");
 
     const [message, setMessage] = useState("");
     const [error, setError] = useState("");
@@ -37,7 +38,8 @@ function OfferRide() {
                     destination: destination.trim(),
                     rideDate: rideDate,
                     rideTime: rideTime,
-                    availableSeats: Number(availableSeats)
+                    availableSeats: Number(availableSeats),
+                    totalExpense: Number(totalExpense)
                 },
                 {
                     headers: {
@@ -57,6 +59,7 @@ function OfferRide() {
             setRideDate("");
             setRideTime("");
             setAvailableSeats("");
+            setTotalExpense("");
 
         } catch (err) {
             console.error("OFFER RIDE ERROR:", err);
@@ -218,6 +221,28 @@ function OfferRide() {
                                 value={availableSeats}
                                 onChange={(e) =>
                                     setAvailableSeats(e.target.value)
+                                }
+                                required
+                            />
+
+                        </div>
+
+                        {/* Total Expense */}
+                        <div className="form-group">
+
+                            <label htmlFor="totalExpense">
+                                Total Ride Expense (₹)
+                            </label>
+
+                            <input
+                                id="totalExpense"
+                                type="number"
+                                min="1"
+                                step="0.01"
+                                placeholder="e.g. 300"
+                                value={totalExpense}
+                                onChange={(e) =>
+                                    setTotalExpense(e.target.value)
                                 }
                                 required
                             />

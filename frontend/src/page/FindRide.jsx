@@ -255,110 +255,141 @@ function FindRide() {
                             {rides.length} ride(s) found
                         </p>
 
-                        {rides.map((ride) => (
+                        {rides.map((ride) => {
 
-                            <div
-                                className="ride-result-card"
-                                key={ride.id}
-                            >
+                            const totalPeople =
+                                ride.availableSeats + 1;
 
-                                <div className="ride-result-main">
+                            const estimatedShare =
+                                totalPeople > 0
+                                    ? ride.totalExpense / totalPeople
+                                    : ride.totalExpense;
 
-                                    <div className="route-section">
+                            return (
+                                <div
+                                    className="ride-result-card"
+                                    key={ride.id}
+                                >
 
-                                        <div className="route-point">
-                                            <span>📍</span>
+                                    <div className="ride-result-main">
 
-                                            <div>
-                                                <small>
-                                                    From
-                                                </small>
+                                        <div className="route-section">
 
-                                                <strong>
-                                                    {ride.source}
-                                                </strong>
+                                            <div className="route-point">
+
+                                                <span>📍</span>
+
+                                                <div>
+
+                                                    <small>
+                                                        From
+                                                    </small>
+
+                                                    <strong>
+                                                        {ride.source}
+                                                    </strong>
+
+                                                </div>
+
                                             </div>
+
+                                            <div className="route-line">
+                                                ↓
+                                            </div>
+
+                                            <div className="route-point">
+
+                                                <span>📍</span>
+
+                                                <div>
+
+                                                    <small>
+                                                        To
+                                                    </small>
+
+                                                    <strong>
+                                                        {ride.destination}
+                                                    </strong>
+
+                                                </div>
+
+                                            </div>
+
                                         </div>
 
-                                        <div className="route-line">
-                                            ↓
-                                        </div>
-
-                                        <div className="route-point">
-                                            <span>📍</span>
+                                        <div className="ride-details">
 
                                             <div>
-                                                <small>
-                                                    To
-                                                </small>
-
+                                                <span>👤 Driver</span>
                                                 <strong>
-                                                    {ride.destination}
+                                                    {ride.driverName}
                                                 </strong>
                                             </div>
+
+                                            <div>
+                                                <span>📅 Date</span>
+                                                <strong>
+                                                    {ride.rideDate}
+                                                </strong>
+                                            </div>
+
+                                            <div>
+                                                <span>🕐 Time</span>
+                                                <strong>
+                                                    {ride.rideTime}
+                                                </strong>
+                                            </div>
+
+                                            <div>
+                                                <span>💺 Seats</span>
+                                                <strong>
+                                                    {ride.availableSeats}
+                                                </strong>
+                                            </div>
+
+                                            <div>
+                                                <span>💰 Total Expense</span>
+                                                <strong>
+                                                    ₹{ride.totalExpense}
+                                                </strong>
+                                            </div>
+
+                                            <div>
+                                                <span>💸 Estimated Share</span>
+                                                <strong>
+                                                    ₹{estimatedShare.toFixed(2)}
+                                                </strong>
+                                            </div>
+
                                         </div>
 
                                     </div>
 
-                                    <div className="ride-details">
+                                    <div className="ride-result-footer">
 
-                                        <div>
-                                            <span>👤 Driver</span>
-                                            <strong>
-                                                {ride.driverName}
-                                            </strong>
-                                        </div>
+                                        <span className="ride-status">
+                                            {ride.status}
+                                        </span>
 
-                                        <div>
-                                            <span>📅 Date</span>
-                                            <strong>
-                                                {ride.rideDate}
-                                            </strong>
-                                        </div>
+                                        {ride.availableSeats > 0 &&
+                                            ride.status === "ACTIVE" && (
 
-                                        <div>
-                                            <span>🕐 Time</span>
-                                            <strong>
-                                                {ride.rideTime}
-                                            </strong>
-                                        </div>
+                                                <button
+                                                    className="request-button"
+                                                    onClick={() =>
+                                                        requestRide(ride.id)
+                                                    }
+                                                >
+                                                    Request Ride
+                                                </button>
 
-                                        <div>
-                                            <span>💺 Seats</span>
-                                            <strong>
-                                                {ride.availableSeats}
-                                            </strong>
-                                        </div>
+                                            )}
 
                                     </div>
 
                                 </div>
-
-                                <div className="ride-result-footer">
-
-                                    <span className="ride-status">
-                                        {ride.status}
-                                    </span>
-
-                                    {ride.availableSeats > 0 &&
-                                        ride.status === "ACTIVE" && (
-
-                                        <button
-                                            className="request-button"
-                                            onClick={() =>
-                                                requestRide(ride.id)
-                                            }
-                                        >
-                                            Request Ride
-                                        </button>
-
-                                    )}
-
-                                </div>
-
-                            </div>
-
-                        ))}
+                            );
+                        })}
 
                     </section>
 

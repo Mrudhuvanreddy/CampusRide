@@ -10,6 +10,7 @@ public class RideRequest {
     private LocalDate rideDate;
     private LocalTime rideTime;
     private Integer availableSeats;
+    private Double totalExpense;
 
     public RideRequest() {
     }
@@ -52,5 +53,13 @@ public class RideRequest {
 
     public void setAvailableSeats(Integer availableSeats) {
         this.availableSeats = availableSeats;
+    }
+
+    public Double getTotalExpense() {
+        return totalExpense;
+    }
+
+    public void setTotalExpense(Double totalExpense) {
+        this.totalExpense = totalExpense;
     }
 }
