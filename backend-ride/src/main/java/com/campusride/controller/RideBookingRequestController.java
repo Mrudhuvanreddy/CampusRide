@@ -99,7 +99,6 @@ public class RideBookingRequestController {
         return convertToResponse(savedRequest);
     }
 
-
     // ==========================================
     // GET MY REQUESTS
     // ==========================================
@@ -122,7 +121,6 @@ public class RideBookingRequestController {
                 .map(this::convertToResponse)
                 .toList();
     }
-
 
     // ==========================================
     // GET REQUESTS FOR A RIDE
@@ -159,7 +157,6 @@ public class RideBookingRequestController {
                 .map(this::convertToResponse)
                 .toList();
     }
-
 
     // ==========================================
     // ACCEPT REQUEST
@@ -226,7 +223,6 @@ public class RideBookingRequestController {
         return convertToResponse(updatedRequest);
     }
 
-
     // ==========================================
     // REJECT REQUEST
     // DRIVER ONLY
@@ -274,6 +270,70 @@ public class RideBookingRequestController {
         return convertToResponse(updatedRequest);
     }
 
+    // ==========================================
+    // GET EXPENSE SHARE
+    // DRIVER OR ACCEPTED PASSENGER ONLY
+    // ==========================================
+
+    @GetMapping("/{rideId}/expense")
+    public String getExpenseShare(
+            @PathVariable Long rideId,
+            Authentication authentication) {
+
+        String email = authentication.getName();
+
+        User user = userRepository
+                .findByEmail(email)
+                .orElseThrow(() ->
+                        new RuntimeException("User not found"));
+
+        Ride ride = rideRepository
+                .findById(rideId)
+                .orElseThrow(() ->
+                        new RuntimeException("Ride not found"));
+
+        // Check if current user is the driver
+        boolean isDriver =
+                ride.getDriver().getId().equals(user.getId());
+
+        // Check if current user is an accepted passenger
+        boolean isAcceptedPassenger =
+                requestRepository
+                        .findByRideAndPassenger(ride, user)
+                        .map(request ->
+                                "ACCEPTED".equals(
+                                        request.getStatus()))
+                        .orElse(false);
+
+        // Only ride participants can see expense details
+        if (!isDriver && !isAcceptedPassenger) {
+            throw new RuntimeException(
+                    "You are not part of this ride");
+        }
+
+        // Count accepted passengers
+        long acceptedPassengers =
+                requestRepository
+                        .findByRideAndStatus(
+                                ride,
+                                "ACCEPTED")
+                        .size();
+
+        // Driver + accepted passengers
+        long totalPeople =
+                acceptedPassengers + 1;
+
+        // Calculate share per person
+        double share =
+                ride.getTotalExpense() / totalPeople;
+
+        return String.format(
+                "{\"totalExpense\":%.2f,\"totalPeople\":%d,\"sharePerPerson\":%.2f}",
+                ride.getTotalExpense(),
+                totalPeople,
+                share
+        );
+    }
 
     // ==========================================
     // CONVERT ENTITY TO RESPONSE

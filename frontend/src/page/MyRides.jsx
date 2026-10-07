@@ -8,6 +8,8 @@ function MyRides() {
     const [offeredRides, setOfferedRides] = useState([]);
     const [myRequests, setMyRequests] = useState([]);
 
+    const [expenseData, setExpenseData] = useState({});
+
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
 
@@ -66,6 +68,74 @@ function MyRides() {
 
             setMyRequests(requestsResponse.data);
 
+            /*
+             * Get expense information for rides
+             * where the current user is a participant.
+             */
+
+            const expenseResults = {};
+
+            // Driver's offered rides
+            for (const ride of myOfferedRides) {
+                try {
+                    const expenseResponse = await axios.get(
+                        `https://campusride-production-1b98.up.railway.app/api/requests/${ride.id}/expense`,
+                        {
+                            headers: {
+                                Authorization: `Bearer ${token}`
+                            }
+                        }
+                    );
+
+                    let data = expenseResponse.data;
+
+                    if (typeof data === "string") {
+                        data = JSON.parse(data);
+                    }
+
+                    expenseResults[ride.id] = data;
+
+                } catch (expenseError) {
+                    console.log(
+                        `Expense not available for ride ${ride.id}`
+                    );
+                }
+            }
+
+            // Passenger's accepted rides
+            for (const request of requestsResponse.data) {
+
+                if (request.status !== "ACCEPTED") {
+                    continue;
+                }
+
+                try {
+                    const expenseResponse = await axios.get(
+                        `https://campusride-production-1b98.up.railway.app/api/requests/${request.rideId}/expense`,
+                        {
+                            headers: {
+                                Authorization: `Bearer ${token}`
+                            }
+                        }
+                    );
+
+                    let data = expenseResponse.data;
+
+                    if (typeof data === "string") {
+                        data = JSON.parse(data);
+                    }
+
+                    expenseResults[request.rideId] = data;
+
+                } catch (expenseError) {
+                    console.log(
+                        `Expense not available for ride ${request.rideId}`
+                    );
+                }
+            }
+
+            setExpenseData(expenseResults);
+
         } catch (err) {
             console.error("MY RIDES ERROR:", err);
 
@@ -78,6 +148,7 @@ function MyRides() {
                     "Cannot connect to CampusRide backend."
                 );
             }
+
         } finally {
             setLoading(false);
         }
@@ -204,99 +275,129 @@ function MyRides() {
 
                             ) : (
 
-                                offeredRides.map((ride) => (
+                                offeredRides.map((ride) => {
 
-                                    <div
-                                        className="my-ride-card"
-                                        key={ride.id}
-                                    >
+                                    const expense =
+                                        expenseData[ride.id];
 
-                                        <div className="my-ride-route">
-
-                                            <div>
-                                                <small>
-                                                    FROM
-                                                </small>
-
-                                                <strong>
-                                                    {ride.source}
-                                                </strong>
-                                            </div>
-
-                                            <span>
-                                                →
-                                            </span>
-
-                                            <div>
-                                                <small>
-                                                    TO
-                                                </small>
-
-                                                <strong>
-                                                    {ride.destination}
-                                                </strong>
-                                            </div>
-
-                                        </div>
-
-                                        <div className="my-ride-info">
-
-                                            <div>
-                                                <span>
-                                                    📅 Date
-                                                </span>
-
-                                                <strong>
-                                                    {ride.rideDate}
-                                                </strong>
-                                            </div>
-
-                                            <div>
-                                                <span>
-                                                    🕐 Time
-                                                </span>
-
-                                                <strong>
-                                                    {ride.rideTime}
-                                                </strong>
-                                            </div>
-
-                                            <div>
-                                                <span>
-                                                    💺 Seats
-                                                </span>
-
-                                                <strong>
-                                                    {ride.availableSeats}
-                                                </strong>
-                                            </div>
-
-                                            <div>
-                                                <span>
-                                                    Status
-                                                </span>
-
-                                                <strong className="status-active">
-                                                    {ride.status}
-                                                </strong>
-                                            </div>
-
-                                        </div>
-
-                                        <button
-                                            className="view-requests-button"
-                                            onClick={() =>
-                                                navigate(
-                                                    `/ride-requests/${ride.id}`
-                                                )
-                                            }
+                                    return (
+                                        <div
+                                            className="my-ride-card"
+                                            key={ride.id}
                                         >
-                                            View Requests →
-                                        </button>
 
-                                    </div>
+                                            <div className="my-ride-route">
 
-                                ))
+                                                <div>
+
+                                                    <small>
+                                                        FROM
+                                                    </small>
+
+                                                    <strong>
+                                                        {ride.source}
+                                                    </strong>
+
+                                                </div>
+
+                                                <span>
+                                                    →
+                                                </span>
+
+                                                <div>
+
+                                                    <small>
+                                                        TO
+                                                    </small>
+
+                                                    <strong>
+                                                        {ride.destination}
+                                                    </strong>
+
+                                                </div>
+
+                                            </div>
+
+                                            <div className="my-ride-info">
+
+                                                <div>
+                                                    <span>
+                                                        📅 Date
+                                                    </span>
+
+                                                    <strong>
+                                                        {ride.rideDate}
+                                                    </strong>
+                                                </div>
+
+                                                <div>
+                                                    <span>
+                                                        🕐 Time
+                                                    </span>
+
+                                                    <strong>
+                                                        {ride.rideTime}
+                                                    </strong>
+                                                </div>
+
+                                                <div>
+                                                    <span>
+                                                        💺 Seats
+                                                    </span>
+
+                                                    <strong>
+                                                        {ride.availableSeats}
+                                                    </strong>
+                                                </div>
+
+                                                <div>
+                                                    <span>
+                                                        💰 Total Expense
+                                                    </span>
+
+                                                    <strong>
+                                                        ₹{ride.totalExpense}
+                                                    </strong>
+                                                </div>
+
+                                                {expense && (
+                                                    <div>
+                                                        <span>
+                                                            💸 Your Share
+                                                        </span>
+
+                                                        <strong>
+                                                            ₹{expense.sharePerPerson}
+                                                        </strong>
+                                                    </div>
+                                                )}
+
+                                                <div>
+                                                    <span>
+                                                        Status
+                                                    </span>
+
+                                                    <strong className="status-active">
+                                                        {ride.status}
+                                                    </strong>
+                                                </div>
+
+                                            </div>
+
+                                            <button
+                                                className="view-requests-button"
+                                                onClick={() =>
+                                                    navigate(
+                                                        `/ride-requests/${ride.id}`
+                                                    )
+                                                }
+                                            >
+                                                View Requests →
+                                            </button>
+
+                                        </div>
+                                    );
+                                })
 
                             )}
 
@@ -349,54 +450,101 @@ function MyRides() {
 
                             ) : (
 
-                                myRequests.map((request) => (
+                                myRequests.map((request) => {
 
-                                    <div
-                                        className="request-card"
-                                        key={request.id}
-                                    >
+                                    const expense =
+                                        expenseData[request.rideId];
 
-                                        <div className="request-route">
+                                    return (
+                                        <div
+                                            className="request-card"
+                                            key={request.id}
+                                        >
 
-                                            <div>
-                                                <small>
-                                                    RIDE
-                                                </small>
+                                            <div className="request-route">
 
-                                                <strong>
-                                                    #{request.rideId}
-                                                </strong>
+                                                <div>
+
+                                                    <small>
+                                                        RIDE
+                                                    </small>
+
+                                                    <strong>
+                                                        #{request.rideId}
+                                                    </strong>
+
+                                                </div>
+
+                                                <div>
+
+                                                    <small>
+                                                        PASSENGER
+                                                    </small>
+
+                                                    <strong>
+                                                        {request.passengerName}
+                                                    </strong>
+
+                                                </div>
+
                                             </div>
 
                                             <div>
-                                                <small>
-                                                    PASSENGER
-                                                </small>
 
-                                                <strong>
-                                                    {request.passengerName}
-                                                </strong>
+                                                <span className="request-label">
+                                                    Request Status
+                                                </span>
+
+                                                <span
+                                                    className={`request-status ${request.status.toLowerCase()}`}
+                                                >
+                                                    {request.status}
+                                                </span>
+
                                             </div>
 
+                                            {request.status === "ACCEPTED" &&
+                                                expense && (
+
+                                                    <div className="ride-expense-info">
+
+                                                        <div>
+                                                            <span>
+                                                                💰 Total Ride Expense
+                                                            </span>
+
+                                                            <strong>
+                                                                ₹{expense.totalExpense}
+                                                            </strong>
+                                                        </div>
+
+                                                        <div>
+                                                            <span>
+                                                                👥 Total People
+                                                            </span>
+
+                                                            <strong>
+                                                                {expense.totalPeople}
+                                                            </strong>
+                                                        </div>
+
+                                                        <div>
+                                                            <span>
+                                                                💸 Your Share
+                                                            </span>
+
+                                                            <strong>
+                                                                ₹{expense.sharePerPerson}
+                                                            </strong>
+                                                        </div>
+
+                                                    </div>
+
+                                                )}
+
                                         </div>
-
-                                        <div>
-
-                                            <span className="request-label">
-                                                Request Status
-                                            </span>
-
-                                            <span
-                                                className={`request-status ${request.status.toLowerCase()}`}
-                                            >
-                                                {request.status}
-                                            </span>
-
-                                        </div>
-
-                                    </div>
-
-                                ))
+                                    );
+                                })
 
                             )}
 

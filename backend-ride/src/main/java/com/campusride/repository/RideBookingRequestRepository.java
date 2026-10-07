@@ -1,13 +1,13 @@
 package com.campusride.repository;
 
-import com.campusride.entity.Ride;
-import com.campusride.entity.RideBookingRequest;
-import com.campusride.entity.User;
+import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.List;
-import java.util.Optional;
+import com.campusride.entity.Ride;
+import com.campusride.entity.RideBookingRequest;
+import com.campusride.entity.User;
 
 public interface RideBookingRequestRepository
         extends JpaRepository<RideBookingRequest, Long> {
@@ -20,4 +20,10 @@ public interface RideBookingRequestRepository
             Ride ride,
             User passenger
     );
+
+    List<RideBookingRequest> findByRideAndStatus(
+            Ride ride,
+            String status
+    );
+    
 }

@@ -15,6 +15,7 @@ public class RideResponse {
     private LocalDate rideDate;
     private LocalTime rideTime;
     private Integer availableSeats;
+    private Double totalExpense;
     private String status;
 
     public RideResponse(
@@ -27,6 +28,7 @@ public class RideResponse {
             LocalDate rideDate,
             LocalTime rideTime,
             Integer availableSeats,
+            Double totalExpense,
             String status) {
 
         this.id = id;
@@ -38,6 +40,7 @@ public class RideResponse {
         this.rideDate = rideDate;
         this.rideTime = rideTime;
         this.availableSeats = availableSeats;
+        this.totalExpense = totalExpense;
         this.status = status;
     }
 
@@ -75,6 +78,10 @@ public class RideResponse {
 
     public Integer getAvailableSeats() {
         return availableSeats;
+    }
+
+    public Double getTotalExpense() {
+        return totalExpense;
     }
 
     public String getStatus() {
