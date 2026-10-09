@@ -83,13 +83,33 @@ public class GeminiService {
 
             if (response.statusCode() < 200
                     || response.statusCode() >= 300) {
+
+                String errorDetails = "No error details returned.";
+
+                try {
+                    JsonNode errorRoot =
+                            objectMapper.readTree(response.body());
+
+                    JsonNode errorMessage =
+                            errorRoot.at("/error/message");
+
+                    if (!errorMessage.isMissingNode()
+                            && !errorMessage.asText().isBlank()) {
+                        errorDetails = errorMessage.asText();
+                    }
+                } catch (Exception ignored) {
+                    // Keep the generic error if the response is not JSON.
+                }
+
                 throw new IllegalStateException(
                         "Gemini API returned HTTP "
                         + response.statusCode()
+                        + ": " + errorDetails
                 );
             }
 
             JsonNode root = objectMapper.readTree(response.body());
+
             JsonNode textNode = root.at(
                     "/candidates/0/content/parts/0/text"
             );
@@ -105,12 +125,16 @@ public class GeminiService {
 
         } catch (IOException e) {
             throw new IllegalStateException(
-                    "Could not communicate with Gemini.", e
+                    "Could not communicate with Gemini: "
+                    + e.getMessage(),
+                    e
             );
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
+
             throw new IllegalStateException(
-                    "Gemini request was interrupted.", e
+                    "Gemini request was interrupted.",
+                    e
             );
         }
     }
