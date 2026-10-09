@@ -16,12 +16,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @Service
 public class GeminiService {
 
-    @Value("${GEMINI_API_KEY:}")
+    @Value("${GROQ_API_KEY:}")
     private String apiKey;
 
-    private static final String GEMINI_URL =
-            "https://generativelanguage.googleapis.com/v1beta/models/"
-            + "gemini-3.8-flash:generateContent";
+    private static final String GROQ_URL =
+            "https://api.groq.com/openai/v1/chat/completions";
+
+    private static final String MODEL =
+            "llama-3.3-70b-versatile";
 
     private final ObjectMapper objectMapper = new ObjectMapper();
 
@@ -33,7 +35,7 @@ public class GeminiService {
 
         if (apiKey == null || apiKey.isBlank()) {
             throw new IllegalStateException(
-                    "Gemini API key is not configured."
+                    "Groq API key is not configured."
             );
         }
 
@@ -44,34 +46,36 @@ public class GeminiService {
         }
 
         try {
-            String prompt =
-                    "You are CampusRide AI, a friendly assistant "
-                    + "for a college carpooling application. "
-                    + "Answer clearly and concisely. "
-                    + "Help users understand ride booking, "
-                    + "carpooling, and ride safety. "
-                    + "Never claim to know live rides, bookings, "
-                    + "or user information unless provided. "
-                    + "User message: " + message;
-
             var body = objectMapper.createObjectNode();
-            var contents = body.putArray("contents");
-            var content = contents.addObject();
-            var parts = content.putArray("parts");
 
-            parts.addObject().put("text", prompt);
+            body.put("model", MODEL);
+            body.put("temperature", 0.7);
+            body.put("max_tokens", 500);
 
-            var generationConfig =
-                    body.putObject("generationConfig");
+            var messages = body.putArray("messages");
 
-            generationConfig.put("temperature", 0.7);
-            generationConfig.put("maxOutputTokens", 500);
+            messages.addObject()
+                    .put("role", "system")
+                    .put(
+                            "content",
+                            "You are CampusRide AI, a friendly assistant "
+                            + "for a college carpooling application. "
+                            + "Answer clearly and concisely. "
+                            + "Help users understand ride booking, "
+                            + "carpooling, and ride safety. "
+                            + "Never claim to know live rides, bookings, "
+                            + "or user information unless provided."
+                    );
+
+            messages.addObject()
+                    .put("role", "user")
+                    .put("content", message.trim());
 
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create(GEMINI_URL))
+                    .uri(URI.create(GROQ_URL))
                     .timeout(Duration.ofSeconds(45))
                     .header("Content-Type", "application/json")
-                    .header("x-goog-api-key", apiKey)
+                    .header("Authorization", "Bearer " + apiKey)
                     .POST(HttpRequest.BodyPublishers.ofString(
                             objectMapper.writeValueAsString(body)))
                     .build();
@@ -99,11 +103,11 @@ public class GeminiService {
                         errorDetails = errorMessage.asText();
                     }
                 } catch (Exception ignored) {
-                    // Keep the generic error if the response is not JSON.
+                    // Keep the generic error if response is not JSON.
                 }
 
                 throw new IllegalStateException(
-                        "Gemini API returned HTTP "
+                        "Groq API returned HTTP "
                         + response.statusCode()
                         + ": " + errorDetails
                 );
@@ -112,13 +116,13 @@ public class GeminiService {
             JsonNode root = objectMapper.readTree(response.body());
 
             JsonNode textNode = root.at(
-                    "/candidates/0/content/parts/0/text"
+                    "/choices/0/message/content"
             );
 
             if (textNode.isMissingNode()
                     || textNode.asText().isBlank()) {
                 throw new IllegalStateException(
-                        "Gemini returned an empty response."
+                        "Groq returned an empty response."
                 );
             }
 
@@ -126,7 +130,7 @@ public class GeminiService {
 
         } catch (IOException e) {
             throw new IllegalStateException(
-                    "Could not communicate with Gemini: "
+                    "Could not communicate with Groq: "
                     + e.getMessage(),
                     e
             );
@@ -134,7 +138,7 @@ public class GeminiService {
             Thread.currentThread().interrupt();
 
             throw new IllegalStateException(
-                    "Gemini request was interrupted.",
+                    "Groq request was interrupted.",
                     e
             );
         }
