@@ -21,7 +21,7 @@ public class GeminiService {
 
     private static final String GEMINI_URL =
             "https://generativelanguage.googleapis.com/v1beta/models/"
-            + "gemini-2.5-flash:generateContent";
+            + "gemini-3.8-flash:generateContent";
 
     private final ObjectMapper objectMapper = new ObjectMapper();
 
@@ -84,7 +84,8 @@ public class GeminiService {
             if (response.statusCode() < 200
                     || response.statusCode() >= 300) {
 
-                String errorDetails = "No error details returned.";
+                String errorDetails =
+                        "No error details returned.";
 
                 try {
                     JsonNode errorRoot =
