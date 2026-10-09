@@ -1,0 +1,138 @@
+.campus-ai-toggle {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  width: 60px;
+  height: 60px;
+  border: none;
+  border-radius: 50%;
+  background: #2563eb;
+  color: white;
+  font-size: 26px;
+  cursor: pointer;
+  z-index: 9999;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+}
+
+.campus-ai-window {
+  position: fixed;
+  right: 24px;
+  bottom: 98px;
+  width: 350px;
+  max-width: calc(100vw - 32px);
+  height: 460px;
+  max-height: calc(100vh - 130px);
+  display: flex;
+  flex-direction: column;
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.2);
+  z-index: 9999;
+  font-family: Arial, sans-serif;
+}
+
+.campus-ai-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px;
+  background: #2563eb;
+  color: white;
+}
+
+.campus-ai-header button {
+  border: none;
+  background: transparent;
+  color: white;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.campus-ai-status {
+  margin-top: 4px;
+  font-size: 12px;
+  opacity: 0.85;
+}
+
+.campus-ai-messages {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  overflow-y: auto;
+  padding: 16px;
+  background: #f8fafc;
+}
+
+.campus-ai-message {
+  max-width: 85%;
+  padding: 10px 12px;
+  border-radius: 12px;
+  font-size: 14px;
+  line-height: 1.5;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.campus-ai-message.assistant {
+  align-self: flex-start;
+  background: white;
+  color: #1f2937;
+  border: 1px solid #e5e7eb;
+}
+
+.campus-ai-message.user {
+  align-self: flex-end;
+  background: #2563eb;
+  color: white;
+}
+
+.campus-ai-form {
+  display: flex;
+  gap: 8px;
+  padding: 12px;
+  border-top: 1px solid #e5e7eb;
+  background: white;
+}
+
+.campus-ai-form input {
+  flex: 1;
+  min-width: 0;
+  padding: 10px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  outline: none;
+}
+
+.campus-ai-form input:focus {
+  border-color: #2563eb;
+}
+
+.campus-ai-form button {
+  padding: 10px 14px;
+  border: none;
+  border-radius: 8px;
+  background: #2563eb;
+  color: white;
+  cursor: pointer;
+}
+
+.campus-ai-form button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+@media (max-width: 480px) {
+  .campus-ai-window {
+    right: 16px;
+    bottom: 88px;
+    width: calc(100vw - 32px);
+  }
+
+  .campus-ai-toggle {
+    right: 16px;
+    bottom: 16px;
+  }
+}

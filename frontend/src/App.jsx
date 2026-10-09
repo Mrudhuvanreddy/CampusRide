@@ -12,25 +12,19 @@ import Profile from "./page/Profile";
 import Chat from "./Chat";
 
 import PageTransition from "./components/PageTransition";
+import AIChatbot from "./components/AIChatbot";
 
 function App() {
     return (
         <BrowserRouter>
             <PageTransition>
                 <Routes>
-
                     <Route path="/" element={<Index />} />
-
                     <Route path="/login" element={<Login />} />
-
                     <Route path="/register" element={<Register />} />
-
                     <Route path="/dashboard" element={<Dashboard />} />
-
                     <Route path="/offer-ride" element={<OfferRide />} />
-
                     <Route path="/find-ride" element={<FindRide />} />
-
                     <Route path="/my-rides" element={<MyRides />} />
 
                     <Route
@@ -40,13 +34,16 @@ function App() {
 
                     <Route path="/profile" element={<Profile />} />
 
+                    {/* Existing driver-passenger chat */}
                     <Route
                         path="/chat/:rideId"
                         element={<Chat />}
                     />
-
                 </Routes>
             </PageTransition>
+
+            {/* Separate AI assistant across all routes */}
+            <AIChatbot />
         </BrowserRouter>
     );
 }
