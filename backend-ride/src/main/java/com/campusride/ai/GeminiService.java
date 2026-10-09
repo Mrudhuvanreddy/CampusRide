@@ -1,4 +1,3 @@
-
 package com.campusride.ai;
 
 import java.io.IOException;
@@ -17,22 +16,18 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @Service
 public class GeminiService {
 
-    @Value("${GEMINI_API_KEY}")
+    @Value("${GEMINI_API_KEY:}")
     private String apiKey;
 
     private static final String GEMINI_URL =
             "https://generativelanguage.googleapis.com/v1beta/models/"
             + "gemini-2.5-flash:generateContent";
 
-    private final ObjectMapper objectMapper;
-    private final HttpClient httpClient;
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
-    public GeminiService(ObjectMapper objectMapper) {
-        this.objectMapper = objectMapper;
-        this.httpClient = HttpClient.newBuilder()
-                .connectTimeout(Duration.ofSeconds(15))
-                .build();
-    }
+    private final HttpClient httpClient = HttpClient.newBuilder()
+            .connectTimeout(Duration.ofSeconds(15))
+            .build();
 
     public String generateResponse(String message) {
 
