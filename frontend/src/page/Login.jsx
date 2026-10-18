@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
+import { API_BASE } from "../config/api";
 function Login() {
     const navigate = useNavigate();
 
@@ -18,7 +19,7 @@ function Login() {
 
         try {
             const response = await axios.post(
-                "https://campusride-iq8w.onrender.com/api/auth/login",
+                `${API_BASE}/api/auth/login`,
                 {
                     email: email.trim(),
                     password: password

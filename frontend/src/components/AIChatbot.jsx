@@ -1,8 +1,8 @@
 import { useState } from "react";
 import "./AIChatbot.css";
+import { API_BASE } from "../config/api";
 
-const API_URL =
-    "https://campusride-production-1b98.up.railway.app";
+const API_URL = API_BASE;
 
 function AIChatbot() {
     const [isOpen, setIsOpen] = useState(false);

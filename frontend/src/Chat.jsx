@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { API_BASE } from "./config/api";
 
 function Chat() {
     const { rideId } = useParams();
@@ -14,8 +15,7 @@ function Chat() {
 
     const token = localStorage.getItem("token");
 
-    const API_URL =
-        "https://campusride-production-1b98.up.railway.app";
+    const API_URL = API_BASE;
 
     const getMessages = async () => {
         try {

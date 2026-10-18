@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { API_BASE } from "../config/api";
 
 function Profile() {
     const navigate = useNavigate();
@@ -23,7 +24,7 @@ function Profile() {
     const loadProfile = async (token) => {
         try {
             const response = await axios.get(
-                "https://campusride-production-1b98.up.railway.app/api/users/profile",
+                `${API_BASE}/api/users/profile`,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`

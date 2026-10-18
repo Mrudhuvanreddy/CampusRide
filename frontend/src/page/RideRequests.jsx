@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
+import { API_BASE } from "../config/api";
 
 function RideRequests() {
     const navigate = useNavigate();
@@ -28,7 +29,7 @@ function RideRequests() {
             setError("");
 
             const response = await axios.get(
-                `https://campusride-production-1b98.up.railway.app/api/requests/ride/${rideId}`,
+                `${API_BASE}/api/requests/ride/${rideId}`,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`
@@ -63,7 +64,7 @@ function RideRequests() {
             setError("");
 
             const response = await axios.put(
-                `https://campusride-production-1b98.up.railway.app/api/requests/${requestId}/accept`,
+                `${API_BASE}/api/requests/${requestId}/accept`,
                 {},
                 {
                     headers: {
@@ -107,7 +108,7 @@ function RideRequests() {
             setError("");
 
             const response = await axios.put(
-                `https://campusride-production-1b98.up.railway.app/api/requests/${requestId}/reject`,
+                `${API_BASE}/api/requests/${requestId}/reject`,
                 {},
                 {
                     headers: {

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { API_BASE } from "../config/api";
 
 function FindRide() {
     const navigate = useNavigate();
@@ -31,7 +32,7 @@ function FindRide() {
 
         try {
             const response = await axios.get(
-                "https://campusride-production-1b98.up.railway.app/api/rides/search",
+                `${API_BASE}/api/rides/search`,
                 {
                     params: {
                         source: source.trim(),
@@ -80,7 +81,7 @@ function FindRide() {
 
         try {
             const response = await axios.post(
-                `https://campusride-production-1b98.up.railway.app/api/requests/${rideId}`,
+                `${API_BASE}/api/requests/${rideId}`,
                 {},
                 {
                     headers: {

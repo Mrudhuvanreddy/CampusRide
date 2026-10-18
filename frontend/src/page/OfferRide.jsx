@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { API_BASE } from "../config/api";
 
 function OfferRide() {
     const navigate = useNavigate();
@@ -32,7 +33,7 @@ function OfferRide() {
 
         try {
             const response = await axios.post(
-                "https://campusride-production-1b98.up.railway.app/api/rides",
+                `${API_BASE}/api/rides`,
                 {
                     source: source.trim(),
                     destination: destination.trim(),

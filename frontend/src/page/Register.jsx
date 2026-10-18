@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
+import { API_BASE } from "../config/api";
 function Register() {
     const navigate = useNavigate();
 
@@ -19,7 +20,7 @@ function Register() {
 
         try {
             await axios.post(
-                "https://campusride-production-1b98.up.railway.app/api/auth/register",
+                `${API_BASE}/api/auth/register`,
                 {
                     name,
                     email,

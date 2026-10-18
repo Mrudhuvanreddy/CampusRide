@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import axios from "axios";
+import { API_BASE } from "../config/api";
 
 
 function MyRides() {
@@ -59,7 +60,7 @@ function MyRides() {
 
             const ridesResponse = await axios.get(
 
-                "https://campusride-production-1b98.up.railway.app/api/rides",
+                `${API_BASE}/api/rides`,
 
                 {
 
@@ -96,7 +97,7 @@ function MyRides() {
 
             const requestsResponse = await axios.get(
 
-                "https://campusride-production-1b98.up.railway.app/api/requests/my-requests",
+                `${API_BASE}/api/requests/my-requests`,
 
                 {
 
@@ -131,7 +132,7 @@ function MyRides() {
 
                     const expenseResponse = await axios.get(
 
-                        `https://campusride-production-1b98.up.railway.app/api/requests/${ride.id}/expense`,
+                        `${API_BASE}/api/requests/${ride.id}/expense`,
 
                         {
 
@@ -188,7 +189,7 @@ function MyRides() {
 
                     const expenseResponse = await axios.get(
 
-                        `https://campusride-production-1b98.up.railway.app/api/requests/${request.rideId}/expense`,
+                        `${API_BASE}/api/requests/${request.rideId}/expense`,
 
                         {
 
