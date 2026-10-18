@@ -18,7 +18,7 @@ function Login() {
 
         try {
             const response = await axios.post(
-                "https://campusride-production-1b98.up.railway.app/api/auth/login",
+                "https://campusride-iq8w.onrender.com/api/auth/login",
                 {
                     email: email.trim(),
                     password: password
